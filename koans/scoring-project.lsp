@@ -50,8 +50,19 @@
 ; Your goal is to write the score method.
 
 (defun score (dice)
-  ; You need to write this method
-)
+    (let ((result))
+        (dolist (v '(1 2 3 4 5 6))
+            (let ((n (count v dice)))
+                 (if (>= n 3)
+                     (progn (push (* v 100) result)
+			    (if (= v 1) (push 900 result))
+			    (setf dice (remove v dice :count 3))
+                  ))
+        ))
+        (push (* (count 1 dice) 100) result)
+        (push (* (count 5 dice) 50) result)
+        (print result)
+        (reduce '+ result)))
 
 (define-test test-score-of-an-empty-list-is-zero
     (assert-equal 0 (score nil)))

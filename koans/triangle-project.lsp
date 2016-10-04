@@ -18,7 +18,19 @@
 (define-condition triangle-error  (error) ())
 
 (defun triangle (a b c)
-  :write-me)
+  (if (eval (cons 'or (mapcar (lambda (x) (<= x 0)) (list a b c))))
+      (error 'triangle-error))
+
+  (if (or (>= a (+ b c)) (>= b (+ a c)) (>= c (+ a b)))
+	  (error 'triangle-error))
+
+  (let ((loop-result
+	   (loop for x in (mapcar 'eql (list a b a) (list b c c))
+	      count x)))
+
+    (if (eql loop-result 3) (return-from triangle :equilateral))
+    (if (eql loop-result 1) (return-from triangle :isosceles))
+    :scalene))
 
 
 (define-test test-equilateral-triangles-have-equal-sides
