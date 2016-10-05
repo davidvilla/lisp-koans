@@ -67,52 +67,52 @@
 
 
 (define-test test-type-specifier-lists-also-have-hierarchy
-   (true-or-false? ____ (subtypep '(SIMPLE-ARRAY T (3 3)) '(SIMPLE-ARRAY T *)))
-   (true-or-false? ____ (subtypep '(vector double-float 100) '(vector * 100)))
-   (true-or-false? ____ (subtypep '(vector double-float 100) '(vector double-float *)))
-   (true-or-false? ____ (subtypep '(vector double-float 100) '(vector * *)))
-   (true-or-false? ____ (subtypep '(vector double-float 100) '(array number *)))
-   (true-or-false? ____ (subtypep '(vector double-float 100) t)))
+   (true-or-false? t (subtypep '(SIMPLE-ARRAY T (3 3)) '(SIMPLE-ARRAY T *)))
+   (true-or-false? t (subtypep '(vector double-float 100) '(vector * 100)))
+   (true-or-false? t (subtypep '(vector double-float 100) '(vector double-float *)))
+   (true-or-false? t (subtypep '(vector double-float 100) '(vector * *)))
+   (true-or-false? nil (subtypep '(vector double-float 100) '(array number *)))
+   (true-or-false? t (subtypep '(vector double-float 100) t)))
 
 
 (define-test test-type-coersion
    (assert-true (typep 0 'integer))
-   (true-or-false? ___ (typep 0 'short-float))
-   (true-or-false? ___ (subtypep 'integer 'short-float))
-   (true-or-false? ___ (subtypep 'short-float 'integer))
-   (true-or-false? ___ (typep (coerce 0 'short-float) 'short-float)))
+   (true-or-false? nil (typep 0 'short-float))
+   (true-or-false? nil (subtypep 'integer 'short-float))
+   (true-or-false? nil (subtypep 'short-float 'integer))
+   (true-or-false? t (typep (coerce 0 'short-float) 'short-float)))
 
 
 (define-test test-atoms-are-anything-thats-not-a-cons
-  (true-or-false? ___ (atom 4))
-  (true-or-false? ___ (atom '(1 2 3 4)))
-  (true-or-false? ___ (atom 'some-unbound-name))
+  (true-or-false? t (atom 4))
+  (true-or-false? nil (atom '(1 2 3 4)))
+  (true-or-false? t (atom 'some-unbound-name))
   (assert-true (typep (make-array '(4 4)) '(SIMPLE-ARRAY * *)))
-  (true-or-false? ___ (atom (make-array '(4 4)))))
+  (true-or-false? t (atom (make-array '(4 4)))))
 
 
 (define-test test-functionp
     "the functionp predicate is true iff the argument is a function"
   (assert-true (functionp (lambda (a b c) (+ a b c))))
-  (true-or-false? ___ (functionp #'make-array))
-  (true-or-false? ___ (functionp '(1 2 3)))
-  (true-or-false? ___ (functionp t)))
+  (true-or-false? t (functionp #'make-array))
+  (true-or-false? nil (functionp '(1 2 3)))
+  (true-or-false? nil (functionp t)))
 
 
 (define-test test-there-are-some-other-type-predicates
   ; see http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node73.html for more.
-  (true-or-false? ___ (numberp 999))
-  (true-or-false? ___ (listp '(9 9 9)))
-  (true-or-false? ___ (integerp 999))
-  (true-or-false? ___ (rationalp 9/99))
-  (true-or-false? ___ (floatp 9.99))
-  (true-or-false? ___ (stringp "nine nine nine"))
-  (true-or-false? ___ (characterp #\9))
-  (true-or-false? ___ (bit-vector-p #*01001)))
+  (true-or-false? t (numberp 999))
+  (true-or-false? t (listp '(9 9 9)))
+  (true-or-false? t (integerp 999))
+  (true-or-false? t (rationalp 9/99))
+  (true-or-false? t (floatp 9.99))
+  (true-or-false? t (stringp "nine nine nine"))
+  (true-or-false? t (characterp #\9))
+  (true-or-false? t (bit-vector-p #*01001)))
 
 
 (define-test test-guess-that-type!
-    (let ((x ____))
+    (let ((x '(SIMPLE-ARRAY T (5 3 *))))
       (assert-true (subtypep  x '(SIMPLE-ARRAY T (* 3 *))))
       (assert-true (subtypep  x '(SIMPLE-ARRAY T (5 * *))))
       (assert-true (subtypep  x '(SIMPLE-ARRAY ARRAY *)))
